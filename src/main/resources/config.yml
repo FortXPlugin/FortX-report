@@ -1,0 +1,15 @@
+#  _____    ___    ____    _____  __  __
+# |  ___|  / _ \  |  _ \  |_   _| \ \/ /
+# | |_    | | | | | |_) |   | |    \  /
+# |  _|   | |_| | |  _ <    | |    /  \
+# |_|      \___/  |_| \_\   |_|   /_/\_\
+
+# If you've got any problems, please go to https://reports.fortx.top/ and read the documentation.
+# Our discord: https://discord.gg/fortx
+
+
+# What language should the plugin use?
+language: en # Supported languages: en, pl, de
+
+# Default off
+debug: false

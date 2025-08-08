@@ -1,0 +1,9 @@
+name: FortX-reports
+version: '0.0.1-InDev'
+main: pl.fortx.report.ReportsPlugin
+api-version: '1.21'
+prefix: FORTX
+load: STARTUP
+authors: [ BTZ ]
+description: The one and only reports plugin you need for your players.
+website: https://reports.fortx.top/

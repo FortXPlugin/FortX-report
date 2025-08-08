@@ -1,0 +1,14 @@
+#  _____    ___    ____    _____  __  __
+# |  ___|  / _ \  |  _ \  |_   _| \ \/ /
+# | |_    | | | | | |_) |   | |    \  /
+# |  _|   | |_| | |  _ <    | |    /  \
+# |_|      \___/  |_| \_\   |_|   /_/\_\
+
+token: "YOUR_DISCORD_BOT_TOKEN_HERE"
+title: "{Player} reported {Target}"
+description: "{Target} has been reported by {Player} for {Reason}"
+color: 16711680
+footer: "Report ID: {ReportID}"
+thumbnail: "https://example.com/thumbnail.png"
+image: "https://example.com/image.png"
+channel: "report-channel-id"
