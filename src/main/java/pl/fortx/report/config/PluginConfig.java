@@ -7,6 +7,7 @@ import dev.dejvokep.boostedyaml.settings.general.GeneralSettings;
 import dev.dejvokep.boostedyaml.settings.loader.LoaderSettings;
 import dev.dejvokep.boostedyaml.settings.updater.UpdaterSettings;
 import dev.dejvokep.boostedyaml.spigot.SpigotSerializer;
+import lombok.Getter;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
@@ -19,7 +20,7 @@ import static com.google.common.io.Resources.getResource;
 
 public class PluginConfig {
 
-
+   @Getter
    private final YamlDocument config;
 
    // Plugin configuration class that loads the config.yml file

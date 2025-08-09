@@ -7,9 +7,20 @@
 # If you've got any problems, please go to https://reports.fortx.top/ and read the documentation.
 # Our discord: https://discord.gg/fortx
 
-
-# What language should the plugin use?
-language: en # Supported languages: en, pl, de
-
 # Default off
 debug: false
+
+multiserver:
+  enabled: false # Enable multiserver support (requires a redis database)
+
+
+# If multiserver is enabled, you need to set up a Redis database.
+redis:
+  host: "localhost"
+  port: 2137
+  password: "fortx_on_top123"
+  channels:
+    adminchat: "adminchat"
+    report: "report"
+    helpop: "helpop"
+

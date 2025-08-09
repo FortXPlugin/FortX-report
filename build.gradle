@@ -38,6 +38,15 @@ dependencies {
     implementation 'dev.dejvokep:boosted-yaml-spigot:1.5'
 
 
+    // Redis for multi-server communication
+    implementation 'redis.clients:jedis:6.0.0'
+
+
+    implementation 'org.reflections:reflections:0.10.2'
+
+
+    implementation "net.kyori:adventure-api:4.24.0"
+
     compileOnly("org.projectlombok:lombok:1.18.38")
     annotationProcessor("org.projectlombok:lombok:1.18.38")
 
