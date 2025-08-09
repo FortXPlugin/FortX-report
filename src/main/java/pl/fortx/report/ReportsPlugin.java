@@ -82,7 +82,7 @@ public final class ReportsPlugin extends JavaPlugin {
         final var annotationParser = new AnnotationParser<>(manager, CommandSender.class);
 
         new CommandManager(this, annotationParser);
-        annotationParser.parse(new ReportCommand(pluginConfig, messagesConfig, text, reportHelper));
+        annotationParser.parse(new ReportCommand(messagesConfig, text, reportHelper));
         annotationParser.parse(new AdminChatCommand(adminChatHelper));
     }
 
