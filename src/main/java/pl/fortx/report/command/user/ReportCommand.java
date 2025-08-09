@@ -8,20 +8,21 @@ import org.incendo.cloud.annotations.Command;
 import org.incendo.cloud.annotations.Permission;
 import org.jetbrains.annotations.NotNull;
 import pl.fortx.report.config.MessagesConfig;
-import pl.fortx.report.config.PluginConfig;
 import pl.fortx.report.helper.ReportHelper;
 import pl.fortx.report.text.Text;
 
 @RequiredArgsConstructor
 public class ReportCommand {
-    private final @NotNull PluginConfig config;
     private final @NotNull MessagesConfig messages;
     private final @NotNull Text text;
     private final ReportHelper reportHelper;
 
+
+    // Report command for players to report other players
+    // This command allows players to report other players for inappropriate behavior or rule violations
     @Permission("report.use")
-    @Command("report <player> <reason>")
-    public void run(@NotNull Player player, @Argument("player") final @NotNull Player target , @Argument("reason") @NotNull String[] reason) {
+    @Command("report|zglos <player> <reason>")
+    public void run(@NotNull Player player, @Argument(value = "player", description = "The player u want to report") final @NotNull Player target , @Argument(value = "reason", description = "The report reason") @NotNull String[] reason) {
         if (player == target) {
             String rawMessage = messages.getMessages().getString("report.self");
             Component message = text.toComponent(rawMessage);

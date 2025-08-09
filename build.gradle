@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'pl.fortx'
-version = '0.0.1-InDev'
+version = '1.0.0'
 
 repositories {
     mavenCentral()
@@ -41,12 +41,17 @@ dependencies {
     // Redis for multi-server communication
     implementation 'redis.clients:jedis:6.0.0'
 
-
+    // Reflections for annotations (not used xD)
     implementation 'org.reflections:reflections:0.10.2'
 
 
+    // Discord for bot integration (S00N)
+    implementation 'net.dv8tion:JDA:5.0.0-beta.20'
+
+    // Adventure API for Components
     implementation "net.kyori:adventure-api:4.24.0"
 
+    // Lombok for getters, setters and more shii
     compileOnly("org.projectlombok:lombok:1.18.38")
     annotationProcessor("org.projectlombok:lombok:1.18.38")
 
@@ -91,5 +96,13 @@ processResources {
 }
 
 shadowJar {
+    relocate 'org.incendo.cloud', 'pl.fortx.report.libs.cloud'
+    relocate 'dev.dejvokep.boostedyaml', 'pl.fortx.report.libs.boostedyaml'
+    relocate 'redis.clients', 'pl.fortx.report.libs.redis'
+    relocate 'net.dv8tion', 'pl.fortx.report.libs.discord'
+    relocate 'net.kyori.adventure', 'pl.fortx.report.libs.adventure'
+    relocate 'org.reflections', 'pl.fortx.report.libs.reflections'
+    relocate 'org.projectlombok', 'pl.fortx.report.libs.lombok'
+    relocate 'io.papermc.paper', 'pl.fortx.report.libs.paper'
     relocate 'dev.dejvokep.boostedyaml', 'pl.fortx.report.libs'
 }

@@ -12,8 +12,11 @@ import pl.fortx.report.helper.AdminChatHelper;
 public class AdminChatCommand {
     private final @NotNull AdminChatHelper adminChatHelper;
 
+
+    // Adminchat command for admins to communicate with each other
+    // This command allows admins to send messages to each other in a separate chat channel
     @Permission("adminchat.use")
-    @Command("adminchat <message>")
+    @Command("adminchat|ac|achat <message>")
     public void run(@NotNull Player player, @Argument("message") @NotNull String[] messageArray) {
         String message = String.join(" ", messageArray);
         adminChatHelper.sendAdminChatMessage(player, message);

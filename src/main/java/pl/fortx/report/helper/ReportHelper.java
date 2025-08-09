@@ -23,7 +23,10 @@ public class ReportHelper {
     private final RedisManager redisManager;
     private final Gson gson = new Gson();
 
+
+    // Sending the report message to the admins
     public final void sendReportMessage(@NotNull Player player, @NotNull Player target, @NotNull String[] reason) {
+        // Multi-server handling (redis)
         if (config.getConfig().getBoolean("multiserver.enabled")) {
             Map<String, String> reportData = new HashMap<>();
             reportData.put("playerName", player.getName());
@@ -34,6 +37,7 @@ public class ReportHelper {
             String jsonReport = gson.toJson(reportData);
             redisManager.publishReport(jsonReport);
 
+            // Sending and formatting the message
             String rawMessage = messages.getMessages().getString("report.message");
             rawMessage = rawMessage.replace("{Player}", player.getName())
                     .replace("{Target}", target.getName())
@@ -54,6 +58,8 @@ public class ReportHelper {
         }
     }
 
+
+    // Processing the report message from Redis
     public void processRedisReport(String jsonReport) {
         try {
             Map<String, String> reportData = gson.fromJson(jsonReport, Map.class);

@@ -25,6 +25,8 @@ public class RedisManager {
     private ExecutorService executorService;
     private boolean running = true;
 
+
+    // Database manager for Redis, DO NOT MODIFY
     public void initialize() {
         String host = config.getConfig().getString("redis.host");
         int port = config.getConfig().getInt("redis.port");

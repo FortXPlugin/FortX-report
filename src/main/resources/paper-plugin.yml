@@ -1,9 +1,23 @@
 name: FortX-reports
-version: '0.0.1-InDev'
+version: '1.0.0'
 main: pl.fortx.report.ReportsPlugin
 api-version: '1.21'
 prefix: FORTX
 load: STARTUP
 authors: [ BTZ ]
 description: The one and only reports plugin you need for your players.
-website: https://reports.fortx.top/
+website: https://fortx.top/
+
+permissions:
+  report.bypass:
+    description: Bypass the report system
+    default: op
+  report.admin:
+    description: Access to the admin commands
+    default: op
+  report.adminchat:
+    description: Access to the admin chat
+    default: op
+  report.use:
+    description: Access to the report commands
+    default: true

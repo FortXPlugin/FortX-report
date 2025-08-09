@@ -1,7 +1,5 @@
 package pl.fortx.report;
 
-import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.incendo.cloud.SenderMapper;
@@ -9,7 +7,6 @@ import org.incendo.cloud.annotations.AnnotationParser;
 import org.incendo.cloud.execution.ExecutionCoordinator;
 import org.incendo.cloud.minecraft.extras.MinecraftHelp;
 import org.incendo.cloud.paper.LegacyPaperCommandManager;
-import org.jetbrains.annotations.NotNull;
 import pl.fortx.report.annotation.managers.CommandManager;
 import pl.fortx.report.command.admin.AdminChatCommand;
 import pl.fortx.report.command.user.ReportCommand;
@@ -20,18 +17,19 @@ import pl.fortx.report.helper.AdminChatHelper;
 import pl.fortx.report.helper.ReportHelper;
 import pl.fortx.report.text.Text;
 
-
-@AllArgsConstructor
 public final class ReportsPlugin extends JavaPlugin {
     private PluginConfig pluginConfig;
     private MessagesConfig messagesConfig;
     private RedisManager redisManager;
     private ReportHelper reportHelper;
-    private final @NotNull Text text;
-    private final @NotNull AdminChatHelper adminChatHelper;
+    private Text text;
+    private AdminChatHelper adminChatHelper;
 
     @Override
     public void onEnable() {
+        // Inicjalizacja Text na początku
+        text = new Text();
+
         initializeConfig();
         initializeManagers();
         registerCommands();
@@ -44,7 +42,6 @@ public final class ReportsPlugin extends JavaPlugin {
 
             messagesConfig = new MessagesConfig(this);
             getLogger().info("Messages loaded successfully.");
-
 
         } catch (Exception e) {
             getLogger().severe("An error occurred during plugin initialization: " + e.getMessage());
@@ -59,12 +56,15 @@ public final class ReportsPlugin extends JavaPlugin {
                 getLogger().info("Redis manager initialized successfully.");
 
                 reportHelper = new ReportHelper(pluginConfig, messagesConfig, text, redisManager);
+                adminChatHelper = new AdminChatHelper(pluginConfig, messagesConfig, text, redisManager);
                 redisManager.startListening(reportHelper, adminChatHelper);
                 getLogger().info("Redis listening for reports and admin chat messages");
             } else {
                 reportHelper = new ReportHelper(pluginConfig, messagesConfig, text, null);
+                adminChatHelper = new AdminChatHelper(pluginConfig, messagesConfig, text, null);
                 getLogger().info("Running in single server mode.");
             }
+
         } catch (Exception e) {
             getLogger().severe("An error occurred during managers initialization: " + e.getMessage());
         }
@@ -78,7 +78,6 @@ public final class ReportsPlugin extends JavaPlugin {
         );
 
         manager.captionRegistry().registerProvider(MinecraftHelp.defaultCaptionsProvider());
-
 
         final var annotationParser = new AnnotationParser<>(manager, CommandSender.class);
 

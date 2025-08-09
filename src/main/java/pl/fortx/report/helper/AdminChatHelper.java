@@ -22,6 +22,8 @@ public class AdminChatHelper {
     private final RedisManager redisManager;
     private final Gson gson = new Gson();
 
+
+    // Sends an admin chat message to all online players with the "adminchat.see" permission
     public void sendAdminChatMessage(@NotNull Player sender, @NotNull String message) {
         if (config.getConfig().getBoolean("multiserver.enabled") && redisManager != null) {
             Map<String, String> chatData = new HashMap<>();
@@ -36,6 +38,7 @@ public class AdminChatHelper {
         }
     }
 
+    // Processes the admin chat message received from Redis
     public void processAdminChatMessage(String jsonMessage) {
         try {
             Map<String, String> chatData = gson.fromJson(jsonMessage, Map.class);
@@ -49,6 +52,7 @@ public class AdminChatHelper {
         }
     }
 
+    // Broadcasts the admin chat message to all online players with the "adminchat.see" permission
     private void broadcastLocalAdminMessage(String playerName, String message, String server) {
         Bukkit.getOnlinePlayers().forEach(p -> {
             if (p.hasPermission("adminchat.see")) {
