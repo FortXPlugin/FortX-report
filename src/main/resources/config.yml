@@ -24,3 +24,6 @@ redis:
     report: "report"
     helpop: "helpop"
 
+# If multiserver is enabled, change this to the name of your server.
+server:
+  name: "lobby" # The name of your server, used for multiserver support.

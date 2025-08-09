@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import pl.fortx.report.config.PluginConfig;
+import pl.fortx.report.helper.AdminChatHelper;
 import pl.fortx.report.helper.ReportHelper;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
@@ -42,19 +43,25 @@ public class RedisManager {
         plugin.getLogger().info("Redis connection initialized successfully.");
     }
 
-    public void startListening(ReportHelper reportHelper) {
+    public void startListening(ReportHelper reportHelper, AdminChatHelper adminChatHelper) {
         executorService.submit(() -> {
             try {
                 while (running) {
                     try (Jedis jedis = jedisPool.getResource()) {
                         jedis.subscribe(new JedisPubSub() {
-                            @Override
-                            public void onMessage(String channel, String message) {
-                                if (channel.equals(config.getConfig().getString("redis.channels.report"))) {
-                                    reportHelper.processRedisReport(message);
-                                }
-                            }
-                        }, config.getConfig().getString("redis.channels.report"));
+                                            @Override
+                                            public void onMessage(String channel, String message) {
+                                                String reportChannel = config.getConfig().getString("redis.channels.report");
+                                                String adminChatChannel = config.getConfig().getString("redis.channels.adminchat");
+
+                                                if (channel.equals(reportChannel)) {
+                                                    reportHelper.processRedisReport(message);
+                                                } else if (channel.equals(adminChatChannel)) {
+                                                    adminChatHelper.processAdminChatMessage(message);
+                                                }
+                                            }
+                                        }, config.getConfig().getString("redis.channels.report"),
+                                config.getConfig().getString("redis.channels.adminchat"));
                     } catch (Exception e) {
                         plugin.getLogger().warning("Redis subscription error: " + e.getMessage());
                         try {
@@ -76,6 +83,14 @@ public class RedisManager {
             jedis.publish(config.getConfig().getString("redis.channels.report"), message);
         } catch (Exception e) {
             plugin.getLogger().warning("Failed to publish report: " + e.getMessage());
+        }
+    }
+
+    public void publishAdminChat(String message) {
+        try (Jedis jedis = jedisPool.getResource()) {
+            jedis.publish(config.getConfig().getString("redis.channels.adminchat"), message);
+        } catch (Exception e) {
+            plugin.getLogger().warning("Failed to publish admin chat message: " + e.getMessage());
         }
     }
 

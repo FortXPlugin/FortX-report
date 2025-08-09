@@ -1,34 +1,34 @@
 package pl.fortx.report;
 
-import dev.dejvokep.boostedyaml.YamlDocument;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.incendo.cloud.SenderMapper;
 import org.incendo.cloud.annotations.AnnotationParser;
-import org.incendo.cloud.execution.CommandExecutor;
 import org.incendo.cloud.execution.ExecutionCoordinator;
 import org.incendo.cloud.minecraft.extras.MinecraftHelp;
 import org.incendo.cloud.paper.LegacyPaperCommandManager;
 import org.jetbrains.annotations.NotNull;
 import pl.fortx.report.annotation.managers.CommandManager;
+import pl.fortx.report.command.admin.AdminChatCommand;
 import pl.fortx.report.command.user.ReportCommand;
 import pl.fortx.report.config.MessagesConfig;
 import pl.fortx.report.config.PluginConfig;
 import pl.fortx.report.database.RedisManager;
+import pl.fortx.report.helper.AdminChatHelper;
 import pl.fortx.report.helper.ReportHelper;
 import pl.fortx.report.text.Text;
 
-import java.io.File;
 
-
+@AllArgsConstructor
 public final class ReportsPlugin extends JavaPlugin {
     private PluginConfig pluginConfig;
     private MessagesConfig messagesConfig;
     private RedisManager redisManager;
     private ReportHelper reportHelper;
-    private Text text;
+    private final @NotNull Text text;
+    private final @NotNull AdminChatHelper adminChatHelper;
 
     @Override
     public void onEnable() {
@@ -37,7 +37,7 @@ public final class ReportsPlugin extends JavaPlugin {
         registerCommands();
     }
 
-    public final void initializeConfig() {
+    public void initializeConfig() {
         try {
             pluginConfig = new PluginConfig(this);
             getLogger().info("Configuration loaded successfully.");
@@ -45,15 +45,13 @@ public final class ReportsPlugin extends JavaPlugin {
             messagesConfig = new MessagesConfig(this);
             getLogger().info("Messages loaded successfully.");
 
-            text = new Text(); // Zakładam, że istnieje taka klasa
 
         } catch (Exception e) {
             getLogger().severe("An error occurred during plugin initialization: " + e.getMessage());
-            e.printStackTrace();
         }
     }
 
-    public final void initializeManagers() {
+    public void initializeManagers() {
         try {
             if (pluginConfig.getConfig().getBoolean("multiserver.enabled")) {
                 redisManager = new RedisManager(pluginConfig, this);
@@ -61,16 +59,14 @@ public final class ReportsPlugin extends JavaPlugin {
                 getLogger().info("Redis manager initialized successfully.");
 
                 reportHelper = new ReportHelper(pluginConfig, messagesConfig, text, redisManager);
-                redisManager.startListening(reportHelper);
-                getLogger().info("Redis listening for reports on channel: " +
-                        pluginConfig.getConfig().getString("redis.channels.report"));
+                redisManager.startListening(reportHelper, adminChatHelper);
+                getLogger().info("Redis listening for reports and admin chat messages");
             } else {
                 reportHelper = new ReportHelper(pluginConfig, messagesConfig, text, null);
                 getLogger().info("Running in single server mode.");
             }
         } catch (Exception e) {
             getLogger().severe("An error occurred during managers initialization: " + e.getMessage());
-            e.printStackTrace();
         }
     }
 
@@ -88,6 +84,7 @@ public final class ReportsPlugin extends JavaPlugin {
 
         new CommandManager(this, annotationParser);
         annotationParser.parse(new ReportCommand(pluginConfig, messagesConfig, text, reportHelper));
+        annotationParser.parse(new AdminChatCommand(adminChatHelper));
     }
 
     @Override

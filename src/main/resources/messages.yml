@@ -10,5 +10,8 @@ report:
   self: "&cYou cannot report yourself!"
   offline: "&cYou cannot report an offline player!"
   bypass: "&cYou cannot report a player with a bypass permission!"
-  message: "&c{Player} reported {Target} for {Reason}!"
+  message: "&f{Player} &areported &f{Target} &afor &c{Reason}!"
   reason: "&cYou must provide a reason for the report!"
+
+adminchat:
+  format: "&c[ADMIN] &f{Player}: &7{Message}"

@@ -20,7 +20,7 @@ public class ReportHelper {
     private final @NotNull PluginConfig config;
     private final @NotNull MessagesConfig messages;
     private final @NotNull Text text;
-    private final @NotNull RedisManager redisManager;
+    private final RedisManager redisManager;
     private final Gson gson = new Gson();
 
     public final void sendReportMessage(@NotNull Player player, @NotNull Player target, @NotNull String[] reason) {
@@ -29,7 +29,7 @@ public class ReportHelper {
             reportData.put("playerName", player.getName());
             reportData.put("targetName", target.getName());
             reportData.put("reason", String.join(" ", reason));
-            reportData.put("server", Bukkit.getServer().getName());
+            reportData.put("server", config.getConfig().getString("server.name", Bukkit.getServer().getName()));
 
             String jsonReport = gson.toJson(reportData);
             redisManager.publishReport(jsonReport);

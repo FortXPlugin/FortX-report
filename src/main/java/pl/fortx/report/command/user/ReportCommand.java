@@ -17,11 +17,11 @@ public class ReportCommand {
     private final @NotNull PluginConfig config;
     private final @NotNull MessagesConfig messages;
     private final @NotNull Text text;
-    private final @NotNull ReportHelper reportHelper;
+    private final ReportHelper reportHelper;
 
     @Permission("report.use")
     @Command("report <player> <reason>")
-    public void run(@NotNull Player player, @Argument final @NotNull Player target , @Argument @NotNull String[] reason) {
+    public void run(@NotNull Player player, @Argument("player") final @NotNull Player target , @Argument("reason") @NotNull String[] reason) {
         if (player == target) {
             String rawMessage = messages.getMessages().getString("report.self");
             Component message = text.toComponent(rawMessage);
