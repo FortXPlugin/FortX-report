@@ -21,3 +21,6 @@ permissions:
   report.use:
     description: Access to the report commands
     default: true
+  adminchat.use:
+    description: Access to the admin chat commands
+    default: op
