@@ -16,3 +16,6 @@ report:
 
 adminchat:
   format: "&c[ADMIN] &f{Player}: &7{Message}"
+
+history:
+  offline: "&cYou cannot view the reports history of an offline player!"

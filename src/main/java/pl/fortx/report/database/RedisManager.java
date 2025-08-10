@@ -5,8 +5,8 @@ import lombok.RequiredArgsConstructor;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import pl.fortx.report.config.PluginConfig;
-import pl.fortx.report.helper.AdminChatHelper;
-import pl.fortx.report.helper.ReportHelper;
+import pl.fortx.report.service.AdminChatService;
+import pl.fortx.report.service.ReportService;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
@@ -45,7 +45,7 @@ public class RedisManager {
         plugin.getLogger().info("Redis connection initialized successfully.");
     }
 
-    public void startListening(ReportHelper reportHelper, AdminChatHelper adminChatHelper) {
+    public void startListening(ReportService reportService, AdminChatService adminChatService) {
         executorService.submit(() -> {
             try {
                 while (running) {
@@ -57,9 +57,9 @@ public class RedisManager {
                                                 String adminChatChannel = config.getConfig().getString("redis.channels.adminchat");
 
                                                 if (channel.equals(reportChannel)) {
-                                                    reportHelper.processRedisReport(message);
+                                                    reportService.processRedisReport(message);
                                                 } else if (channel.equals(adminChatChannel)) {
-                                                    adminChatHelper.processAdminChatMessage(message);
+                                                    adminChatService.processAdminChatMessage(message);
                                                 }
                                             }
                                         }, config.getConfig().getString("redis.channels.report"),

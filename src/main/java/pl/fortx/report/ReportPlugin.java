@@ -13,23 +13,22 @@ import pl.fortx.report.command.user.ReportCommand;
 import pl.fortx.report.config.MessagesConfig;
 import pl.fortx.report.config.PluginConfig;
 import pl.fortx.report.database.RedisManager;
-import pl.fortx.report.helper.AdminChatHelper;
-import pl.fortx.report.helper.ReportHelper;
-import pl.fortx.report.helper.ReportLimiter;
-import pl.fortx.report.text.Text;
+import pl.fortx.report.service.AdminChatService;
+import pl.fortx.report.service.ReportService;
+import pl.fortx.report.service.ReportLimiter;
+import pl.fortx.report.text.TextHelper;
 
-public final class ReportsPlugin extends JavaPlugin {
+public final class ReportPlugin extends JavaPlugin {
     private PluginConfig pluginConfig;
     private MessagesConfig messagesConfig;
     private RedisManager redisManager;
-    private ReportHelper reportHelper;
-    private Text text;
-    private AdminChatHelper adminChatHelper;
+    private ReportService reportService;
+    private TextHelper textHelper;
+    private AdminChatService adminChatService;
 
     @Override
     public void onEnable() {
-        // Inicjalizacja Text na początku
-        text = new Text();
+        textHelper = new TextHelper();
 
         initializeConfig();
         initializeManagers();
@@ -56,13 +55,13 @@ public final class ReportsPlugin extends JavaPlugin {
                 redisManager.initialize();
                 getLogger().info("Redis manager initialized successfully.");
 
-                reportHelper = new ReportHelper(pluginConfig, messagesConfig, text, redisManager);
-                adminChatHelper = new AdminChatHelper(pluginConfig, messagesConfig, text, redisManager);
-                redisManager.startListening(reportHelper, adminChatHelper);
+                reportService = new ReportService(pluginConfig, messagesConfig, textHelper, redisManager);
+                adminChatService = new AdminChatService(pluginConfig, messagesConfig, textHelper, redisManager);
+                redisManager.startListening(reportService, adminChatService);
                 getLogger().info("Redis listening for reports and admin chat messages");
             } else {
-                reportHelper = new ReportHelper(pluginConfig, messagesConfig, text, null);
-                adminChatHelper = new AdminChatHelper(pluginConfig, messagesConfig, text, null);
+                reportService = new ReportService(pluginConfig, messagesConfig, textHelper, null);
+                adminChatService = new AdminChatService(pluginConfig, messagesConfig, textHelper, null);
                 getLogger().info("Running in single server mode.");
             }
 
@@ -84,8 +83,8 @@ public final class ReportsPlugin extends JavaPlugin {
 
         new CommandManager(this, annotationParser);
         ReportLimiter limiter = new ReportLimiter(pluginConfig);
-        annotationParser.parse(new ReportCommand(messagesConfig, text, reportHelper, limiter));
-        annotationParser.parse(new AdminChatCommand(adminChatHelper));
+        annotationParser.parse(new ReportCommand(messagesConfig, textHelper, reportService, limiter));
+        annotationParser.parse(new AdminChatCommand(adminChatService));
     }
 
     @Override

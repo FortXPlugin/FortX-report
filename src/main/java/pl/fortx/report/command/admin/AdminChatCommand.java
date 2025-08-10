@@ -6,11 +6,11 @@ import org.incendo.cloud.annotations.Argument;
 import org.incendo.cloud.annotations.Command;
 import org.incendo.cloud.annotations.Permission;
 import org.jetbrains.annotations.NotNull;
-import pl.fortx.report.helper.AdminChatHelper;
+import pl.fortx.report.service.AdminChatService;
 
 @RequiredArgsConstructor
 public class AdminChatCommand {
-    private final @NotNull AdminChatHelper adminChatHelper;
+    private final @NotNull AdminChatService adminChatService;
 
 
     // Adminchat command for admins to communicate with each other
@@ -19,13 +19,13 @@ public class AdminChatCommand {
     @Command("adminchat|ac|achat <message>")
     public void run(@NotNull Player player, @Argument("message") @NotNull String[] messageArray) {
         String message = String.join(" ", messageArray);
-        adminChatHelper.sendAdminChatMessage(player, message);
+        adminChatService.sendAdminChatMessage(player, message);
     }
 
     @Permission("adminchat.use")
     @Command("ac <message>")
     public void runAlias(@NotNull Player player, @Argument("message") @NotNull String[] messageArray) {
         String message = String.join(" ", messageArray);
-        adminChatHelper.sendAdminChatMessage(player, message);
+        adminChatService.sendAdminChatMessage(player, message);
     }
 }

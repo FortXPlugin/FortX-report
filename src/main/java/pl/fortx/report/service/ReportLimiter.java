@@ -1,22 +1,25 @@
-package pl.fortx.report.helper;
+package pl.fortx.report.service;
 
-import lombok.AllArgsConstructor;
+
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import pl.fortx.report.config.PluginConfig;
 
 import java.sql.Time;
 import java.util.HashMap;
+import java.util.Map;
 
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ReportLimiter {
     private final @NotNull PluginConfig config;
-
+    @Getter
+    Map<Player, Time> lastReport = new HashMap<>();
 
 
     public boolean canReport(Player player) {
-        HashMap<Player, Time> lastReport = new HashMap<>();
         if (lastReport.containsKey(player)) {
             Time lastTime = lastReport.get(player);
             Time currentTime = new Time(System.currentTimeMillis());

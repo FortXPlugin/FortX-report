@@ -8,15 +8,15 @@ import org.incendo.cloud.annotations.Command;
 import org.incendo.cloud.annotations.Permission;
 import org.jetbrains.annotations.NotNull;
 import pl.fortx.report.config.MessagesConfig;
-import pl.fortx.report.helper.ReportHelper;
-import pl.fortx.report.helper.ReportLimiter;
-import pl.fortx.report.text.Text;
+import pl.fortx.report.service.ReportService;
+import pl.fortx.report.service.ReportLimiter;
+import pl.fortx.report.text.TextHelper;
 
 @RequiredArgsConstructor
 public class ReportCommand {
     private final @NotNull MessagesConfig messages;
-    private final @NotNull Text text;
-    private final ReportHelper reportHelper;
+    private final @NotNull TextHelper textHelper;
+    private final ReportService reportService;
     private final @NotNull ReportLimiter limiter;
 
 
@@ -27,25 +27,31 @@ public class ReportCommand {
     public void run(@NotNull Player player, @Argument(value = "player", description = "The player u want to report") final @NotNull Player target , @Argument(value = "reason", description = "The report reason") @NotNull String[] reason) {
         if (!limiter.canReport(player)) {
             String rawMessage = messages.getMessages().getString("report.cooldown");
-            Component message = text.toComponent(rawMessage);
+            Component message = textHelper.toComponent(rawMessage);
             player.sendMessage(message);
             return;
         }
         if (player == target) {
             String rawMessage = messages.getMessages().getString("report.self");
-            Component message = text.toComponent(rawMessage);
+            Component message = textHelper.toComponent(rawMessage);
             player.sendMessage(message);
-
-        } else if (!target.isOnline()) {
+            return;
+        }
+        if (!target.isOnline()) {
             String rawMessage = messages.getMessages().getString("report.offline");
-            Component message = text.toComponent(rawMessage);
+            Component message = textHelper.toComponent(rawMessage);
             player.sendMessage(message);
-        } else if (target.hasPermission("report.bypass")) {
+            return;
+        }
+        if (target.hasPermission("report.bypass")) {
             String rawMessage = messages.getMessages().getString("report.bypass");
-            Component message = text.toComponent(rawMessage);
+            Component message = textHelper.toComponent(rawMessage);
             player.sendMessage(message);
-        } else {
-            reportHelper.sendReportMessage(player, target, reason);
+            return;
+        }
+        {
+            reportService.sendReportMessage(player, target, reason);
+            return;
         }
     }
 }

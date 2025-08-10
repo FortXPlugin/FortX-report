@@ -18,7 +18,11 @@ public class HistoryCommand {
     @Permission("report.history")
     @Command("history|h|reports <player>")
     public void run(@NotNull final Player player, @Argument(value = "player", description = "The player whose report history you want to view") final @NotNull Player target) {
-        // Will add the implementation later
+        if (!target.isOnline()) {
+            String rawMessage = messages.getMessages().getString("history.offline");
+            player.sendMessage(rawMessage);
+            return;
+        }
     }
 
 }

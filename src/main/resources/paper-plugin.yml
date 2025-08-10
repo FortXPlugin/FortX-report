@@ -1,6 +1,6 @@
 name: FortX-reports
 version: '1.0.0'
-main: pl.fortx.report.ReportsPlugin
+main: pl.fortx.report.ReportPlugin
 api-version: '1.21'
 prefix: FORTX
 load: STARTUP

@@ -1,4 +1,4 @@
-package pl.fortx.report.helper;
+package pl.fortx.report.service;
 
 import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
@@ -9,17 +9,17 @@ import org.jetbrains.annotations.NotNull;
 import pl.fortx.report.config.MessagesConfig;
 import pl.fortx.report.config.PluginConfig;
 import pl.fortx.report.database.RedisManager;
-import pl.fortx.report.text.Text;
+import pl.fortx.report.text.TextHelper;
 
 import java.util.HashMap;
 import java.util.Map;
 
 
 @RequiredArgsConstructor
-public class ReportHelper {
+public class ReportService {
     private final @NotNull PluginConfig config;
     private final @NotNull MessagesConfig messages;
-    private final @NotNull Text text;
+    private final @NotNull TextHelper textHelper;
     private final RedisManager redisManager;
     private final Gson gson = new Gson();
 
@@ -42,7 +42,7 @@ public class ReportHelper {
             rawMessage = rawMessage.replace("{Player}", player.getName())
                     .replace("{Target}", target.getName())
                     .replace("{Reason}", String.join(" ", reason));
-            Component message = text.toComponent(rawMessage);
+            Component message = textHelper.toComponent(rawMessage);
             player.sendMessage(message);
         } else {
             Bukkit.getOnlinePlayers().forEach(p -> {
@@ -51,7 +51,7 @@ public class ReportHelper {
                     rawMessage = rawMessage.replace("{Player}", player.getName())
                             .replace("{Target}", target.getName())
                             .replace("{Reason}", String.join(" ", reason));
-                    Component message = text.toComponent(rawMessage);
+                    Component message = textHelper.toComponent(rawMessage);
                     p.sendMessage(message);
                 }
             });
@@ -77,7 +77,7 @@ public class ReportHelper {
 
                     rawMessage += " &7[Serwer: " + server + "]";
 
-                    Component message = text.toComponent(rawMessage);
+                    Component message = textHelper.toComponent(rawMessage);
                     p.sendMessage(message);
                 }
             });

@@ -5,15 +5,15 @@ import org.incendo.cloud.annotations.AnnotationParser;
 import org.jetbrains.annotations.NotNull;
 import org.reflections.Reflections;
 import org.reflections.scanners.Scanners;
-import pl.fortx.report.ReportsPlugin;
+import pl.fortx.report.ReportPlugin;
 import pl.fortx.report.annotation.impl.RegisteredCommand;
 
 import java.util.Set;
 
 public class CommandManager {
-    private final ReportsPlugin plugin;
+    private final ReportPlugin plugin;
 
-    public CommandManager(final @NotNull ReportsPlugin plugin, final @NotNull AnnotationParser<CommandSender> annotationParser) {
+    public CommandManager(final @NotNull ReportPlugin plugin, final @NotNull AnnotationParser<CommandSender> annotationParser) {
         this.plugin = plugin;
 
         register(annotationParser);
@@ -40,10 +40,10 @@ public class CommandManager {
         }
     }
 
-    private Object create(final @NotNull Class<?> clazz, final @NotNull ReportsPlugin plugin) throws Exception {
+    private Object create(final @NotNull Class<?> clazz, final @NotNull ReportPlugin plugin) throws Exception {
         try {
             return clazz.getConstructor(
-                    ReportsPlugin.class
+                    ReportPlugin.class
             ).newInstance(plugin);
         } catch (final NoSuchMethodException exception) {
             return clazz.getConstructor().newInstance();
