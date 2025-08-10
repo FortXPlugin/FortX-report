@@ -19,7 +19,6 @@ import java.util.Map;
 public class ReportService {
     private final @NotNull PluginConfig config;
     private final @NotNull MessagesConfig messages;
-    private final @NotNull TextHelper textHelper;
     private final RedisManager redisManager;
     private final Gson gson = new Gson();
 
@@ -42,7 +41,7 @@ public class ReportService {
             rawMessage = rawMessage.replace("{Player}", player.getName())
                     .replace("{Target}", target.getName())
                     .replace("{Reason}", String.join(" ", reason));
-            Component message = textHelper.toComponent(rawMessage);
+            Component message = TextHelper.toComponent(rawMessage);
             player.sendMessage(message);
         } else {
             Bukkit.getOnlinePlayers().forEach(p -> {
@@ -51,7 +50,7 @@ public class ReportService {
                     rawMessage = rawMessage.replace("{Player}", player.getName())
                             .replace("{Target}", target.getName())
                             .replace("{Reason}", String.join(" ", reason));
-                    Component message = textHelper.toComponent(rawMessage);
+                    Component message = TextHelper.toComponent(rawMessage);
                     p.sendMessage(message);
                 }
             });
@@ -77,7 +76,7 @@ public class ReportService {
 
                     rawMessage += " &7[Serwer: " + server + "]";
 
-                    Component message = textHelper.toComponent(rawMessage);
+                    Component message = TextHelper.toComponent(rawMessage);
                     p.sendMessage(message);
                 }
             });

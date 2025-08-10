@@ -18,7 +18,6 @@ import java.util.Map;
 public class AdminChatService {
     private final @NotNull PluginConfig config;
     private final @NotNull MessagesConfig messages;
-    private final @NotNull TextHelper textHelper;
     private final RedisManager redisManager;
     private final Gson gson = new Gson();
 
@@ -64,7 +63,7 @@ public class AdminChatService {
                     rawMessage += " &7[" + server + "]";
                 }
 
-                Component formattedMessage = textHelper.toComponent(rawMessage);
+                Component formattedMessage = TextHelper.toComponent(rawMessage);
                 p.sendMessage(formattedMessage);
             }
         });

@@ -23,12 +23,10 @@ public final class ReportPlugin extends JavaPlugin {
     private MessagesConfig messagesConfig;
     private RedisManager redisManager;
     private ReportService reportService;
-    private TextHelper textHelper;
     private AdminChatService adminChatService;
 
     @Override
     public void onEnable() {
-        textHelper = new TextHelper();
 
         initializeConfig();
         initializeManagers();

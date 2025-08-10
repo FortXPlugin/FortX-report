@@ -15,7 +15,6 @@ import pl.fortx.report.text.TextHelper;
 @RequiredArgsConstructor
 public class ReportCommand {
     private final @NotNull MessagesConfig messages;
-    private final @NotNull TextHelper textHelper;
     private final ReportService reportService;
     private final @NotNull ReportLimiter limiter;
 
@@ -27,25 +26,25 @@ public class ReportCommand {
     public void run(@NotNull Player player, @Argument(value = "player", description = "The player u want to report") final @NotNull Player target , @Argument(value = "reason", description = "The report reason") @NotNull String[] reason) {
         if (!limiter.canReport(player)) {
             String rawMessage = messages.getMessages().getString("report.cooldown");
-            Component message = textHelper.toComponent(rawMessage);
+            Component message = TextHelper.toComponent(rawMessage);
             player.sendMessage(message);
             return;
         }
         if (player == target) {
             String rawMessage = messages.getMessages().getString("report.self");
-            Component message = textHelper.toComponent(rawMessage);
+            Component message = TextHelper.toComponent(rawMessage);
             player.sendMessage(message);
             return;
         }
         if (!target.isOnline()) {
             String rawMessage = messages.getMessages().getString("report.offline");
-            Component message = textHelper.toComponent(rawMessage);
+            Component message = TextHelper.toComponent(rawMessage);
             player.sendMessage(message);
             return;
         }
         if (target.hasPermission("report.bypass")) {
             String rawMessage = messages.getMessages().getString("report.bypass");
-            Component message = textHelper.toComponent(rawMessage);
+            Component message = TextHelper.toComponent(rawMessage);
             player.sendMessage(message);
             return;
         }
