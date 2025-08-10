@@ -16,7 +16,6 @@ import pl.fortx.report.database.RedisManager;
 import pl.fortx.report.service.AdminChatService;
 import pl.fortx.report.service.ReportService;
 import pl.fortx.report.service.ReportLimiter;
-import pl.fortx.report.text.TextHelper;
 
 public final class ReportPlugin extends JavaPlugin {
     private PluginConfig pluginConfig;
@@ -53,13 +52,13 @@ public final class ReportPlugin extends JavaPlugin {
                 redisManager.initialize();
                 getLogger().info("Redis manager initialized successfully.");
 
-                reportService = new ReportService(pluginConfig, messagesConfig, textHelper, redisManager);
-                adminChatService = new AdminChatService(pluginConfig, messagesConfig, textHelper, redisManager);
+                reportService = new ReportService(pluginConfig, messagesConfig, redisManager);
+                adminChatService = new AdminChatService(pluginConfig, messagesConfig, redisManager);
                 redisManager.startListening(reportService, adminChatService);
                 getLogger().info("Redis listening for reports and admin chat messages");
             } else {
-                reportService = new ReportService(pluginConfig, messagesConfig, textHelper, null);
-                adminChatService = new AdminChatService(pluginConfig, messagesConfig, textHelper, null);
+                reportService = new ReportService(pluginConfig, messagesConfig, null);
+                adminChatService = new AdminChatService(pluginConfig, messagesConfig, null);
                 getLogger().info("Running in single server mode.");
             }
 
@@ -81,7 +80,7 @@ public final class ReportPlugin extends JavaPlugin {
 
         new CommandManager(this, annotationParser);
         ReportLimiter limiter = new ReportLimiter(pluginConfig);
-        annotationParser.parse(new ReportCommand(messagesConfig, textHelper, reportService, limiter));
+        annotationParser.parse(new ReportCommand(messagesConfig, reportService, limiter));
         annotationParser.parse(new AdminChatCommand(adminChatService));
     }
 
