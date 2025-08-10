@@ -15,6 +15,7 @@ import pl.fortx.report.config.PluginConfig;
 import pl.fortx.report.database.RedisManager;
 import pl.fortx.report.helper.AdminChatHelper;
 import pl.fortx.report.helper.ReportHelper;
+import pl.fortx.report.helper.ReportLimiter;
 import pl.fortx.report.text.Text;
 
 public final class ReportsPlugin extends JavaPlugin {
@@ -82,7 +83,8 @@ public final class ReportsPlugin extends JavaPlugin {
         final var annotationParser = new AnnotationParser<>(manager, CommandSender.class);
 
         new CommandManager(this, annotationParser);
-        annotationParser.parse(new ReportCommand(messagesConfig, text, reportHelper));
+        ReportLimiter limiter = new ReportLimiter(pluginConfig);
+        annotationParser.parse(new ReportCommand(messagesConfig, text, reportHelper, limiter));
         annotationParser.parse(new AdminChatCommand(adminChatHelper));
     }
 

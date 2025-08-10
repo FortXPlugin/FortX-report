@@ -27,3 +27,7 @@ redis:
 # If multiserver is enabled, change this to the name of your server.
 server:
   name: "lobby" # The name of your server, used for multiserver support.
+
+report:
+  cooldown: 300 # Cooldown in seconds for a player to send another report.
+

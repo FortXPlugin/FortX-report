@@ -12,6 +12,7 @@ report:
   bypass: "&cYou cannot report a player with a bypass permission!"
   message: "&f{Player} &areported &f{Target} &afor &c{Reason}!"
   reason: "&cYou must provide a reason for the report!"
+  cooldown: "&cYou must wait before sending another report!"
 
 adminchat:
   format: "&c[ADMIN] &f{Player}: &7{Message}"
